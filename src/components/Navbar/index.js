@@ -3,19 +3,13 @@ import React, { useState } from "react";
 import BrandLogo from "../../assets/images/brand-logo.png";
 import Button from "../Button";
 import Hamburger from "../Hamburger";
+import { navLinks } from "../../utils/constants";
 
 function Navbar() {
-  const links = [
-    { name: "Home", link: "/" },
-    { name: "About", link: "/about" },
-    { name: "Services", link: "/services" },
-    { name: "Contact", link: "/contact" },
-  ];
-
   const [isNavOpen, setIsNavOpen] = useState(false);
 
   return (
-    <header className="relative">
+    <header className="relative z-[2]">
       <nav className="DESKTOP-NAVBAR flex items-center justify-between bg-secondary-light px-8">
         <div className="flex justify-center items-center">
           <div onClick={() => setIsNavOpen(!isNavOpen)}>
@@ -31,9 +25,9 @@ function Navbar() {
 
         <div className="flex justify-center items-center gap-16">
           <ul className="flex items-center justify-center gap-8 font-basic font-medium text-base text-primary-dark max-lg:text-sm max-md:hidden">
-            {links.map((link) => (
-              <li key={link.name}>
-                <a href={link.link}>{link.name}</a>
+            {navLinks.map((link) => (
+              <li key={link.title}>
+                <a href={link.url}>{link.title}</a>
               </li>
             ))}
           </ul>
@@ -43,14 +37,14 @@ function Navbar() {
       </nav>
 
       <nav
-        className={`MOBILE-NAVBAR bg-secondary-light py-4 absolute w-full z-[-1] md:z-auto md:hidden transition-all duration-300 ease-in ${
+        className={`MOBILE-NAVBAR bg-secondary-light py-4 absolute w-full -z-[1] md:hidden transition-all duration-300 ease-in ${
           isNavOpen ? "top-full opacity-100" : "-top-[500px] opacity-0"
         }`}
       >
         <ul className="flex flex-col justify-center items-center gap-4 font-basic font-medium text-base text-primary-dark ">
-          {links.map((link) => (
-            <li key={link.name}>
-              <a href={link.link}>{link.name}</a>
+          {navLinks.map((link) => (
+            <li key={link.title}>
+              <a href={link.url}>{link.title}</a>
             </li>
           ))}
         </ul>

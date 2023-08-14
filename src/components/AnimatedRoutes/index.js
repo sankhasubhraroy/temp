@@ -1,11 +1,11 @@
 import React from "react";
-import Navbar from "../Navbar";
+import Home from "../../pages/Home";
 
 function AnimatedRoutes() {
   return (
-    <div>
-      <Navbar />
-    </div>
+    <>
+      <Home />
+    </>
   );
 }
 
