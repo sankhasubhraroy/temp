@@ -5,27 +5,25 @@ const navLinks = [
   { title: "Contact", url: "/contact" },
 ];
 
-const backgroundSlides = [
-  {
-    title: "business",
-    url: "https://source.unsplash.com/random/1280×720/?business",
-  },
-  {
-    title: "company",
-    url: "https://source.unsplash.com/random/1280×720/?company",
-  },
-  {
-    title: "computer",
-    url: "https://source.unsplash.com/random/1280×720/?computer",
-  },
-  {
-    title: "analytics",
-    url: "https://source.unsplash.com/random/1280×720/?analytics",
-  },
-  {
-    title: "freelancer",
-    url: "https://source.unsplash.com/random/1280×720/?freelancer",
-  },
+const unsplashUrl = "https://source.unsplash.com/random/1280×720/?";
+const unsplashKeywords = [
+  "business",
+  "company",
+  "computer",
+  "analytics",
+  "freelancer",
+  "football",
+  "science",
+  "logo",
+  "design",
+  "nature",
 ];
+
+const backgroundSlides = unsplashKeywords.map((keyword) => {
+  return {
+    title: keyword,
+    url: unsplashUrl + keyword,
+  };
+});
 
 export { backgroundSlides, navLinks };
