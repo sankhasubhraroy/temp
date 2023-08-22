@@ -1,6 +1,7 @@
 import React from "react";
-import Navbar from "../../components/Navbar";
-import Hero from "../../components/Hero";
+import Navbar from "../components/Navbar";
+import Hero from "../components/Hero";
+import Brands from "../components/Brands";
 
 function Home() {
   return (
@@ -9,7 +10,7 @@ function Home() {
         <Navbar />
         <Hero />
       </section>
-      <h2>sjafhjafhjafhjka</h2>
+      <Brands />
     </>
   );
 }
