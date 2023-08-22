@@ -1,12 +1,12 @@
 import React from "react";
-import Carousel from "../Carousel";
-import { backgroundSlides } from "../../utils/constants";
-import Button from "../Button";
+import SimpleCarousel from "./Carousels/SimpleCarousel";
+import { backgroundSlides } from "../utils/constants";
+import Button from "./Buttons";
 
 function Hero() {
   return (
     <section className="w-full h-full relative">
-      <Carousel
+      <SimpleCarousel
         slides={backgroundSlides}
         autoSlide={true}
         customSlide={false}
