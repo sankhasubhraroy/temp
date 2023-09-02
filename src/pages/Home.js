@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
-import Brands from "../components/Brands";
+import Partners from "../components/Partners";
 
 function Home() {
   return (
@@ -10,7 +10,7 @@ function Home() {
         <Navbar />
         <Hero />
       </section>
-      <Brands />
+      <Partners />
     </>
   );
 }
