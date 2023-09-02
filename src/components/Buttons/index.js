@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Button({ useCase = "basic", buttonName }) {
   return (
@@ -16,9 +17,11 @@ function Button({ useCase = "basic", buttonName }) {
       )}
 
       {useCase === "freelancer-join" && (
-        <button className="font-basic font-medium text-base text-secondary-light bg-primary-dark px-4 py-2 rounded-md max-lg:text-sm max-sm:text-xs max-sm:max-w-[80px] max-sm:px-2 max-sm:py-1">
-          {buttonName}
-        </button>
+        <Link to="/auth">
+          <button className="font-basic font-medium text-base text-secondary-light bg-primary-dark px-4 py-2 rounded-md max-lg:text-sm max-sm:text-xs max-sm:max-w-[80px] max-sm:px-2 max-sm:py-1">
+            {buttonName}
+          </button>
+        </Link>
       )}
     </>
   );

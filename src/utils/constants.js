@@ -1,7 +1,7 @@
 const navLinks = [
   { title: "Home", url: "/" },
   { title: "About", url: "/about" },
-  { title: "Services", url: "/services" },
+  { title: "Service", url: "/service" },
   { title: "Contact", url: "/contact" },
 ];
 

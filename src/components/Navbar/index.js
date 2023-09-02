@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-// import { link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import BrandLogo from "../../assets/images/brand-logo.png";
 import Button from "../Buttons";
 import Hamburger from "./Hamburger";
@@ -108,13 +108,13 @@ function Navbar() {
             <ul className="flex items-center justify-center gap-8 font-basic font-medium text-base text-primary-dark max-lg:text-sm">
               {navLinks.map((link) => (
                 <motion.li key={link.title}>
-                  <a href={link.url}>{link.title}</a>
+                  <Link to={link.url}>{link.title}</Link>
                 </motion.li>
               ))}
             </ul>
           )}
 
-          <Button buttonName="Become a Freelancer" useCase="freelancer-join" />
+          <Button buttonName="Join" useCase="freelancer-join" />
         </div>
       </motion.nav>
 
@@ -148,7 +148,7 @@ function Navbar() {
                 whileTap={{ scale: 0.95 }}
                 key={link.title}
               >
-                <a href={link.url}>{link.title}</a>
+                <Link to={link.url}>{link.title}</Link>
               </motion.li>
             ))}
           </motion.ul>
