@@ -4,6 +4,7 @@ import Hero from "../components/Hero";
 import Partners from "../components/Partners";
 import { motion } from "framer-motion";
 import { routeVariants } from "../utils/constants";
+import { Outlet } from "react-router-dom";
 
 function Home() {
   return (
@@ -20,6 +21,7 @@ function Home() {
         <Hero />
         <Partners />
       </motion.section>
+      <Outlet />
     </>
   );
 }
