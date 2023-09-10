@@ -1,13 +1,19 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 import BrandLogo from "../../assets/images/brand-logo.png";
 import Hamburger from "./Hamburger";
 import { navLinks } from "../../utils/constants";
-import { motion, useMotionValueEvent, useScroll } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValueEvent,
+  useScroll,
+} from "framer-motion";
 import useMediaQuery from "../../hooks/useMediaQuery";
+import Backdrop from "./Backdrop";
 
 // Variants for mobile navbar
-const navVariants = {
+const sidebarVariants = {
   open: {
     opacity: 1,
     x: 0,
@@ -75,25 +81,6 @@ function Navbar() {
     setScrollY(latest);
   });
 
-  // Closing the mobile navbar when clicked outside of it
-  useEffect(() => {
-    const handleOutsideClick = (event) => {
-      if (navRef.current && !navRef.current.contains(event.target)) {
-        setIsNavOpen(false);
-      }
-    };
-
-    if (isNavOpen) {
-      document.addEventListener("click", handleOutsideClick);
-    } else {
-      document.removeEventListener("click", handleOutsideClick);
-    }
-
-    return () => {
-      document.removeEventListener("click", handleOutsideClick);
-    };
-  }, [isNavOpen]);
-
   return (
     <>
       <header
@@ -146,11 +133,15 @@ function Navbar() {
           </div>
         </motion.nav>
 
+        <AnimatePresence>
+          {isNavOpen && <Backdrop onClick={() => setIsNavOpen(!isNavOpen)} />}
+        </AnimatePresence>
+
         {isTablet && (
           <motion.nav
             initial={false}
             animate={isNavOpen ? "open" : "closed"}
-            variants={navVariants}
+            variants={sidebarVariants}
             drag="x"
             dragConstraints={{ left: 0, right: 0 }}
             dragElastic={{ left: 1, right: 0 }}
