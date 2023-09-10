@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import BrandLogo from "../../assets/images/brand-logo.png";
-import Button from "../Buttons";
 import Hamburger from "./Hamburger";
 import { navLinks } from "../../utils/constants";
-import { motion } from "framer-motion";
+import { motion, useMotionValueEvent, useScroll } from "framer-motion";
 import useMediaQuery from "../../hooks/useMediaQuery";
 
 // Variants for mobile navbar
@@ -68,6 +67,13 @@ function Navbar() {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const navRef = useRef(null);
   const isTablet = useMediaQuery("(max-width: 768px)");
+  const { scrollYProgress } = useScroll();
+  const [scrollY, setScrollY] = useState(0);
+
+  // changing the scrollY value as per page scroll progress
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    setScrollY(latest);
+  });
 
   // Closing the mobile navbar when clicked outside of it
   useEffect(() => {
@@ -89,72 +95,96 @@ function Navbar() {
   }, [isNavOpen]);
 
   return (
-    <header ref={navRef} className="relative z-[1]">
-      <motion.nav
-        animate={isNavOpen ? "open" : "closed"}
-        className="DESKTOP-NAVBAR flex items-center justify-between bg-secondary-light px-8 max-md:px-4"
+    <>
+      <header
+        ref={navRef}
+        className={`w-full z-[1] ${
+          isTablet || scrollY > 0.1 ? "fixed" : "absolute"
+        }`}
       >
-        <div className="flex justify-center items-center gap-4">
-          {isTablet && <Hamburger toggle={() => setIsNavOpen(!isNavOpen)} />}
-          <div className="BRAND-LOGO w-28">
-            <a href="/">
-              <img src={BrandLogo} alt="WorkWise" />
-            </a>
+        <motion.nav
+          animate={isNavOpen ? "open" : "closed"}
+          className={`DESKTOP-NAVBAR flex items-center justify-between px-8 max-md:px-4 transition duration-300 ease-in-out ${
+            isTablet || scrollY > 0.1 ? "bg-white" : "bg-transparent"
+          }`}
+        >
+          <div className="flex justify-center items-center gap-4">
+            {isTablet && <Hamburger toggle={() => setIsNavOpen(!isNavOpen)} />}
+            <div className="BRAND-LOGO w-28">
+              <a href="/">
+                <img src={BrandLogo} alt="WorkWise" />
+              </a>
+            </div>
           </div>
-        </div>
 
-        <div className="flex justify-center items-center gap-16">
-          {!isTablet && (
-            <ul className="flex items-center justify-center gap-8 font-basic font-medium text-base text-primary-dark max-lg:text-sm">
+          <div className="flex justify-center items-center gap-16">
+            {!isTablet && (
+              <ul
+                className={`flex items-center justify-center gap-8 font-basic font-medium text-base max-lg:text-sm transition duration-300 ease-in-out ${
+                  scrollY > 0.1 ? "text-black" : "text-white"
+                }`}
+              >
+                {navLinks.map((link) => (
+                  <motion.li key={link.title}>
+                    <Link to={link.url}>{link.title}</Link>
+                  </motion.li>
+                ))}
+              </ul>
+            )}
+
+            <Link to="/auth">
+              <button
+                className={`font-basic font-medium text-base text-secondary-light px-4 py-2 rounded-md max-lg:text-sm max-sm:text-xs max-sm:max-w-[80px] max-sm:px-2 max-sm:py-1 ${
+                  isTablet || scrollY > 0.1
+                    ? "bg-primary-dark"
+                    : "bg-transparent border-2 border-white"
+                }`}
+              >
+                Join
+              </button>
+            </Link>
+          </div>
+        </motion.nav>
+
+        {isTablet && (
+          <motion.nav
+            initial={false}
+            animate={isNavOpen ? "open" : "closed"}
+            variants={navVariants}
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={{ left: 1, right: 0 }}
+            dragMomentum={false}
+            dragTransition={{ delay: -0.5 }}
+            onDragEnd={(e, { offset, velocity }) => {
+              const swipe = swipePower(offset.x, velocity.x);
+              const isLeftDirection = offset.x < -45 && velocity.x <= 0;
+              if (swipe < -swipeConfidenceThreshold || isLeftDirection) {
+                setIsNavOpen(!isNavOpen);
+              }
+            }}
+            className="MOBILE-NAVBAR h-screen w-60 bg-white p-4 absolute top-0"
+          >
+            <motion.ul
+              variants={menuVariants}
+              className="flex flex-col justify-center items-start gap-4 my-12 font-basic font-normal text-base text-primary-dark "
+            >
               {navLinks.map((link) => (
-                <motion.li key={link.title}>
+                <motion.li
+                  variants={linkVariants}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  key={link.title}
+                >
                   <Link to={link.url}>{link.title}</Link>
                 </motion.li>
               ))}
-            </ul>
-          )}
-
-          <Button buttonName="Join" useCase="freelancer-join" />
-        </div>
-      </motion.nav>
-
-      {isTablet && (
-        <motion.nav
-          initial={false}
-          animate={isNavOpen ? "open" : "closed"}
-          variants={navVariants}
-          drag="x"
-          dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={{ left: 1, right: 0 }}
-          dragMomentum={false}
-          dragTransition={{ delay: -0.5 }}
-          onDragEnd={(e, { offset, velocity }) => {
-            const swipe = swipePower(offset.x, velocity.x);
-            const isLeftDirection = offset.x < -45 && velocity.x <= 0;
-            if (swipe < -swipeConfidenceThreshold || isLeftDirection) {
-              setIsNavOpen(!isNavOpen);
-            }
-          }}
-          className="MOBILE-NAVBAR h-screen w-60 bg-secondary-light p-4 absolute top-0"
-        >
-          <motion.ul
-            variants={menuVariants}
-            className="flex flex-col justify-center items-start gap-4 my-12 font-basic font-normal text-base text-primary-dark "
-          >
-            {navLinks.map((link) => (
-              <motion.li
-                variants={linkVariants}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                key={link.title}
-              >
-                <Link to={link.url}>{link.title}</Link>
-              </motion.li>
-            ))}
-          </motion.ul>
-        </motion.nav>
-      )}
-    </header>
+            </motion.ul>
+          </motion.nav>
+        )}
+      </header>
+      <Outlet />
+    </>
   );
 }
 

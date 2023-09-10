@@ -1,6 +1,5 @@
 import React from "react";
 import { motion } from "framer-motion";
-import Navbar from "../components/Navbar";
 import { routeVariants } from "../utils/constants";
 
 function About() {
@@ -13,7 +12,6 @@ function About() {
       transition={{ duration: 0.5 }}
       className="text-2xl"
     >
-      <Navbar />
       This is About Page
     </motion.div>
   );

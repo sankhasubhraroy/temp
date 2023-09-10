@@ -5,7 +5,7 @@ import Button from "./Buttons";
 
 function Hero() {
   return (
-    <section className="w-full h-full relative">
+    <section className="w-full h-screen relative">
       <SimpleCarousel
         slides={backgroundSlides}
         autoSlide={true}
