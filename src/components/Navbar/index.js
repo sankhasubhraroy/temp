@@ -11,6 +11,7 @@ import {
 } from "framer-motion";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import Backdrop from "./Backdrop";
+import Auth from "../Auth";
 
 // Variants for mobile navbar
 const sidebarVariants = {
@@ -75,11 +76,24 @@ function Navbar() {
   const isTablet = useMediaQuery("(max-width: 768px)");
   const { scrollYProgress } = useScroll();
   const [scrollY, setScrollY] = useState(0);
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
 
   // changing the scrollY value as per page scroll progress
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     setScrollY(latest);
   });
+
+  // Preventing scroll when the modal is open
+  const openAuth = () => {
+    setIsAuthOpen(true);
+    document.body.style.overflow = "hidden";
+  };
+
+  // Enabling Scroll whren the modal is closed
+  const closeAuth = () => {
+    setIsAuthOpen(false);
+    document.body.style.overflow = "unset";
+  };
 
   return (
     <>
@@ -119,17 +133,16 @@ function Navbar() {
               </ul>
             )}
 
-            <Link to="/auth">
-              <button
-                className={`font-basic font-medium text-base text-secondary-light px-4 py-2 rounded-md max-lg:text-sm max-sm:text-xs max-sm:max-w-[80px] max-sm:px-2 max-sm:py-1 ${
-                  isTablet || scrollY > 0.1
-                    ? "bg-primary-dark"
-                    : "bg-transparent border-2 border-white"
-                }`}
-              >
-                Join
-              </button>
-            </Link>
+            <button
+              onClick={openAuth}
+              className={`font-basic font-medium text-base text-secondary-light px-4 py-2 rounded-md max-lg:text-sm max-sm:text-xs max-sm:max-w-[80px] max-sm:px-2 max-sm:py-1 ${
+                isTablet || scrollY > 0.1
+                  ? "bg-primary-dark"
+                  : "bg-transparent border-2 border-white"
+              }`}
+            >
+              Join
+            </button>
           </div>
         </motion.nav>
 
@@ -174,6 +187,11 @@ function Navbar() {
           </motion.nav>
         )}
       </header>
+
+      <AnimatePresence initial={false}>
+        {isAuthOpen && <Auth handleClose={closeAuth} />}
+      </AnimatePresence>
+
       <Outlet />
     </>
   );
